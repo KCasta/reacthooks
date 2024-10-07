@@ -4,6 +4,9 @@ import animeMovies from "./movie";
 import Filter from "./components/Filter";
 import AddMovie from "./components/AddMovie";
 import { Container } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DescriptionPage from "./pages/DescriptionPage";
+import TrailerPage from "./pages/TrailerPage";
 const App = () => {
   const [originalMovies, setOriginalMovies] = React.useState(animeMovies);
   // Initialize the state for the filtered movies
@@ -37,16 +40,33 @@ const App = () => {
   };
   // Return the main component
   return (
-    <Container>
-      <div className="d-flex justify-content-around">
-        {/* // Add the Filter component */}
-        <Filter onFilterChange={handleFilterChange} />
-        {/* // Add the AddMovie component */}
-        <AddMovie onAddMovie={addMovieHandler} />
-      </div>
-      <MovieList movies={filteredMovies} />
-      {/* //passing the filtered movies to the MovieList component */}
-    </Container>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Container>
+              <div className="d-flex justify-content-around">
+                {/* // Add the Filter component */}
+                <Filter onFilterChange={handleFilterChange} />
+                {/* // Add the AddMovie component */}
+                <AddMovie onAddMovie={addMovieHandler} />
+              </div>
+              <MovieList movies={filteredMovies} />
+              {/* //passing the filtered movies to the MovieList component */}
+            </Container>
+          }
+        ></Route>
+        <Route
+          path="/description/:title"
+          element={<DescriptionPage movies={filteredMovies} />}
+        />
+        <Route
+          path="/trailer/:title"
+          element={<TrailerPage movies={filteredMovies} />}
+        />
+      </Routes>
+    </Router>
   );
 };
 
